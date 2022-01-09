@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style>
+		.order , .orderId{
+			border: 1px solid #eee;
+			width: 20%;
+			padding: 10px;
+			height: 80vh;
+		}
+		.order > div{
+			margin-bottom: 10%;
+		}
+		button{
+			padding: 10px 20px;
+			background: orangered;
+			border: none;
+			color: #fff;
+		}
+		.mcD{
+			display: flex;
+		}
+
+		.your_order{
+			display: flex;
+			flex-wrap: wrap;
+			width:60%;
+			border: 1px solid #eee;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+		}
+		.your_order > div{
+			margin-left:20px;
+			text-align: center;
+		}
+
+		.your_order h1{
+			font-size:101px;
+			font-family: sans-serif;
+			text-align: center;
+			color: lightgray;
+		}
+		.your_order span{
+			font-size: 30px;
+
+		}
+
+		.orderId{
+			text-align: center;
+		}
+		.orderId img{
+			width: 100%;
+			height: 100%;
+			margin-top:50%;
+
+		}
+
+	</style>
+</head>
+<body>
+	<div class="mcD">
+		<div class="order">
+				<h2>Food Items</h2>
+			<div>
+				<input type="checkbox" id="0" value = "Spicy Crispy Chicken Sandwich">
+				<label>
+					<span>Spicy Crispy Chicken Sandwich</span>
+				</label>
+			</div>
+			<div>
+				<input type="checkbox" id="1" value = "Big Mac">
+				<label>
+					<span>Big Mac</span>
+				</label>
+			</div>
+			<div>	
+				<input type="checkbox" id="2" value = "Chicken McNuggets">
+				<label>
+					<span>Chicken McNuggets</span>
+				</label>
+			</div>
+			<div>
+				<input type="checkbox" id="3" value = "Sausage Burrito">
+				<label>
+					<span>Sausage Burrito</span>
+				</label>
+			</div>
+			<div>
+				<input type="checkbox" id="4" value = "Crispy Chicken Sandwich">
+				<label>
+					<span>Crispy Chicken Sandwich</span>
+				</label>
+			</div>
+			<div>
+				<input type="checkbox" id="5" value = "Cheeseburger">
+				<label>
+					<span>Cheeseburger</span>
+				</label>
+			</div>	
+
+
+			<button onclick="orderFood()">Order Food</button>
+		</div>
+
+
+		<div class="your_order"> 
+			<h1>Your <br>Order</h1>
+		</div>
+		<div class="orderId">
+			<h1>Your Order No </h1>
+			<p id="ord--num">-</p>
+			<div>
+				<img src="https://companiesmarketcap.com/img/company-logos/512/MCD.png">
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+<script >
+	//FOOD IMAGES
+	let imgs = [
+		"https://www.mcdonalds.com/is/image/content/dam/usa/nfl/nutrition/items/regular/desktop/t-mcdonalds-spicy-crispy-chicken-sandwich.jpg?$Category_Desktop$",
+		"https://www.mcdonalds.com/is/image/content/dam/usa/nfl/nutrition/items/regular/desktop/t-mcdonalds-Big-Mac.jpg?$Category_Desktop$" ,
+		"https://www.mcdonalds.com/is/image/content/dam/usa/nfl/nutrition/items/regular/desktop/t-mcdonalds-Chicken-McNuggets-4pc.jpg?$Category_Desktop$",
+		"https://www.mcdonalds.com/is/image/content/dam/usa/nfl/nutrition/items/regular/desktop/t-mcdonalds-Sausage-Burrito.jpg?$Category_Desktop$" ,
+		"https://www.mcdonalds.com/is/image/content/dam/usa/nfl/nutrition/items/iconic/desktop/t-mcdonalds-crispy-chicken-sandwich.jpg?$Category_Desktop$" ,
+		"https://www.mcdonalds.com/is/image/content/dam/usa/nfl/nutrition/items/iconic/desktop/t-mcdonalds-Cheeseburger.jpg?$Category_Desktop$"
+
+	]
+
+
+	//FINDING TO HOW MANY CHECKBOX ARE CHECKEED CHECK
+	let food = document.querySelectorAll("input")
+	function orderFood(){
+		document.querySelector(".your_order").innerHTML = "";
+		for(var i = 0 ; i < food.length ; i++){
+			if(food[i].checked){
+
+				//PUT THAT CHECK VALUE INTO THE PROMISE FUNCTION AND PASS THE ARGUMENT (ID AND VALUE)
+				Food(i , food[i].value)
+
+			}
+		}
+
+	}
+
+
+	//USING PROMISE 
+	function Food(food , foodName){
+		
+		let promise = new Promise(function (resolve , reject){
+
+			//SHOING MSG FOR WATING FOOD
+			document.querySelector(".your_order").innerHTML = "<span>your order is conform <br>wait........</span>"
+			setTimeout(function(){
+				f = [food , foodName]
+				
+				resolve(f)
+
+
+			} , 2000);
+			
+		});
+
+		promise.then(function(res){
+			//GIVE RES TO THE DISPLAY ORDER FUNCTION
+			displayOrder(res[0] , res[1])
+
+			
+		}).catch(function(err){
+			alert(err)
+		})
+	}
+
+
+	//DISPLAY ORDER FUNCTION ON BODY
+	function displayOrder(id , foodName){
+			//REMOVE WATING MSG HERE
+			document.querySelector(".your_order > span").innerHTML = ""
+
+			//FOOD DIV
+			var foodImg = imgs[id]
+			var div = document.createElement("div")
+			var img = document.createElement("img")
+			img.src = foodImg
+
+			var name = document.createElement("p")
+			name.innerText = foodName
+			div.append(img , name)
+			document.querySelector(".your_order").append(div)
+
+			//SHOWING ORDER NUMBER
+			var orderid = document.querySelector("#ord--num")
+			orderid.innerHTML = Math.floor(Math.random(0) * 10)
+
+	}
+
+</script>
